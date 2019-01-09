@@ -7,6 +7,7 @@
 
 typedef struct LinkedList *node;
 node head;
+int NOProblems;
 typedef struct {
     char problem[200];
     char firstChoice[200];
@@ -19,6 +20,14 @@ struct LinkedList {
     Choice choice;
     struct LinkedList *next;
 };
+
+typedef struct {
+    char name[30];
+    int people;
+    int court;
+    int treasury;
+    int level;
+} point;
 
 node add_node(node head, Choice value);
 

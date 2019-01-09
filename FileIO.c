@@ -4,6 +4,25 @@
 #include "FileIO.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
+
+void save_user_data(point stats, int problems[NOProblems]) {
+    char finalName[20] = "Files\\";
+    strcat(finalName, stats.name);
+    strcat(finalName, ".bin");
+    printf("%s ss", finalName);
+    FILE *filePtr = fopen(finalName, "wb");
+    fwrite(&stats, sizeof(point), 1, filePtr);
+    node t = head;
+    int index = 0;
+    while(t != NULL){
+//        problems[index] = t->choice.probability;
+        index++;
+        t = t->next;
+    }
+    fwrite(problems, sizeof(int), (size_t) NOProblems, filePtr);
+    fclose(filePtr);
+}
 
 void load_game_config() {
     // read choices names from CHOICES.txt
@@ -23,7 +42,8 @@ void load_game_config() {
         index++;
         if (feof(filePtr))break;
     }
-
+    NOProblems = index;
+    fclose(filePtr);
 }
 
 Choice readChoice(char fileName[20]) {
