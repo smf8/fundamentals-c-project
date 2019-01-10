@@ -9,8 +9,7 @@
 #include "LinkedList.h"
 
 Choice readChoice(char fileName[20]);
-
-int readChoices(char *strings[]);
+void read_choices();
 void save_user_data(point stats, int problems[NOProblems]);
 void load_game_config();
 int check_if_file_exist(char fileAdress[30]);

@@ -12,7 +12,12 @@ int main() {
     printf("Enter username : \n");
     gets(username);
     srand((unsigned int) time(NULL));
-    play_game();
+    load_game();
+//    printf("%d -- \n", head->next->next->next->choice.probability);
+//    for (int i = 0; i < NOProblems; ++i) {
+//        show_choice(head, i+1);
+//    }
+//    play_game();
     /*
      char address[30];
     strcpy(address, "Files\\");

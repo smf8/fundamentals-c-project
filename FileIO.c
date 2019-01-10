@@ -7,10 +7,9 @@
 #include <string.h>
 
 void save_user_data(point stats, int problems[NOProblems]) {
-    char finalName[20] = "Files\\";
+    char finalName[20] = "Saves\\";
     strcat(finalName, stats.name);
     strcat(finalName, ".bin");
-    printf("%s ss", finalName);
     FILE *filePtr = fopen(finalName, "wb");
     fwrite(&stats, sizeof(point), 1, filePtr);
     node t = head;
@@ -36,7 +35,17 @@ int check_if_file_exist(char fileAddress[30]) {
 }
 
 //Function to read config files (Choices) from Files\CHOICES.txt and save them all in a LinkedList
-
+void read_choices(){
+    FILE *filePtr = fopen("Files\\CHOICES.txt", "r");
+    int index = 0;
+    while (1) {
+        fscanf(filePtr, "%s");
+        index++;
+        if (feof(filePtr))break;
+    }
+    NOProblems = index;
+    fclose(filePtr);
+}
 void load_game_config() {
     // read choices names from CHOICES.txt
     head = NULL;
@@ -50,6 +59,7 @@ void load_game_config() {
         strcpy(strings[index], currentText); // name of the choice's file
         Choice c = readChoice(currentText);
         c.id = id;
+        c.probability = 3;
         id++;
         head = add_node(head, c);
         index++;

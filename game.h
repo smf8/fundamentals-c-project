@@ -8,4 +8,5 @@
 #define FUNDAMENTALCPROJECT_GAME_H
 void play_game();
 void update_user_stats(point lastStats);
+void load_game();
 #endif //FUNDAMENTALCPROJECT_GAME_H

@@ -35,7 +35,7 @@ point userStats;
 node add_node(node head, Choice value);
 
 node show_choice(node head, int id);
-
+node find_node(node head, int id);
 void delete_node(node *head, int id);
 
 #endif //FUNDAMENTALCPROJECT_LINKEDLIST_H

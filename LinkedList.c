@@ -20,7 +20,7 @@ node add_node(node head, Choice value) {
     strcpy(temp_node->choice.firstChoice, value.firstChoice);
     strcpy(temp_node->choice.problem, value.problem);
     strcpy(temp_node->choice.secondChoice, value.secondChoice);
-    temp_node->choice.probability = 3;
+    temp_node->choice.probability = value.probability;
     temp_node->choice.id = value.id;
     temp_node->choice.firstCImpact[0] = value.firstCImpact[0];
     temp_node->choice.firstCImpact[1] = value.firstCImpact[1];
@@ -40,7 +40,16 @@ node add_node(node head, Choice value) {
     }
     return head;
 }
-
+node find_node(node head, int id){
+    node tmp = head;
+    while (tmp->next != NULL && tmp->choice.id != id) {
+        tmp = tmp->next;
+    }
+    if (tmp->choice.id != id) {
+        return NULL;
+    }
+    return tmp;
+}
 node show_choice(node head, int id) {
     node tmp = head;
     while (tmp->next != NULL && tmp->choice.id != id) {
@@ -49,6 +58,7 @@ node show_choice(node head, int id) {
     if (tmp->choice.id != id) {
         return NULL;
     }
+//    printf("---[%d]---\n", tmp->choice.probability);
     puts(tmp->choice.problem);
     printf("Please Choose what to do : \n");
     printf("1- %s", tmp->choice.firstChoice);

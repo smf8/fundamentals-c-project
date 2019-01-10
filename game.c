@@ -63,15 +63,63 @@ int is_game_over() {
     return 0;
 }
 
+void load_game(){
+    head = NULL;
+    read_choices();
+    char address[30];
+    strcpy(address, "Saves\\");
+    strcat(address, username),
+    strcat(address, ".bin");
+    FILE* filePtr = fopen(address, "rb");
+    fread(&userStats, sizeof(point), 1, filePtr);
+    int problemsCnt[NOProblems];
+    fread(problemsCnt, sizeof(int), (size_t) NOProblems, filePtr);
+    for (int i = 0; i < NOProblems ; ++i) {
+        if (problemsCnt[i] > 0){
+            char fileName[10];
+            strcpy(fileName, "c");
+            char tmp[12];
+            sprintf(tmp, "%d", (i+1));
+            strcat(fileName, tmp);
+            strcat(fileName, ".txt");
+            Choice c = readChoice(fileName);
+            c.id = (i+1);
+            c.probability = problemsCnt[i];
+            printf("problem[%d] is : %d\n", (i+1), c.probability);
+            head = add_node(head, c);
+            // file c[i] must be added to our linked list
+        }
+    }
+}
+
+void save_game(){
+    int problemsLeft[NOProblems];
+//    printf(" is number of NOProblems : %d\n" , NOProblems);
+    // code for initializing the problem counts
+    for (int i = 0; i <NOProblems ; ++i) {
+        node currentNode = find_node(head, i+1);
+        if (currentNode != NULL){
+            problemsLeft[i] = currentNode->choice.probability;
+        }else{
+            problemsLeft[i] = 0;
+        };
+//        printf("- %d - ", problemsLeft[i]);
+    }
+
+    save_user_data(userStats, problemsLeft);
+}
+
 void play_game() {
     printf("Welcome %s to this fucking game\n", username);
     printf("If you don't know how to play, well unfortunately there is no tutorial but I'll be glad to help you in person.\n");
+    // loads setting files in Files\Choices.txt
     load_game_config();
+    // initial stats (50,50,50) with level 0; must change in future releases
     point stats;
     stats.level = 0;
     update_user_stats(stats);
-
-    // code to generate a random problem
+    // code for running game for 5 rounds for playing the final game remove below i and it's usages
+    int i = 0;
     while (!is_game_over()) {
         int randomProblemId = (rand() % NOProblems) + 1;
         node selectedNode = show_choice(head, randomProblemId);
@@ -84,6 +132,11 @@ void play_game() {
             printf("\n\n----------- User stats -------------\nPeople : %d\nCourt : %d\nTreasury : %d\n Level : %d\n\n id : %d remains %d\n\n",
                    userStats.people, userStats.court, userStats.treasury, userStats.level, selectedNode->choice.id,
                    selectedNode->choice.probability);
+        }
+        i++;
+        if (i >= 15){
+            save_game();
+            break;
         }
     }
 }
