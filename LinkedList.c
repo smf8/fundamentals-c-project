@@ -40,16 +40,31 @@ node add_node(node head, Choice value) {
     }
     return head;
 }
-node find_node(node head, int id){
+
+node find_node(node head, int id) {
     node tmp = head;
-    while (tmp->next != NULL && tmp->choice.id != id) {
-        tmp = tmp->next;
-    }
-    if (tmp->choice.id != id) {
-        return NULL;
+    if (head != NULL) {
+        while (tmp->next != NULL && tmp->choice.id != id) {
+            tmp = tmp->next;
+        }
+        if (tmp->choice.id != id) {
+            return NULL;
+        }
     }
     return tmp;
 }
+
+int is_list_empty(node head) {
+    int t = 1;
+    if (head == NULL)
+        return -1;
+    else {
+        for (node d = head; d->next != NULL; d = d->next) t++;
+    }
+    return t;
+}
+
+
 node show_choice(node head, int id) {
     node tmp = head;
     while (tmp->next != NULL && tmp->choice.id != id) {

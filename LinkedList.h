@@ -9,7 +9,7 @@ typedef struct LinkedList *node;
 node head;
 int NOProblems;
 char username[30];
-
+int userQuit;
 typedef struct {
     char problem[200];
     char firstChoice[200];
@@ -36,6 +36,7 @@ node add_node(node head, Choice value);
 
 node show_choice(node head, int id);
 node find_node(node head, int id);
+int is_list_empty(node head);
 void delete_node(node *head, int id);
 
 #endif //FUNDAMENTALCPROJECT_LINKEDLIST_H
