@@ -24,6 +24,19 @@ void save_user_data(point stats, int problems[NOProblems]) {
     fclose(filePtr);
 }
 
+int check_if_file_exist(char fileAddress[30]){
+    FILE* filePtr = fopen(fileAddress, "r");
+    if (filePtr == NULL){
+        fclose(filePtr);
+        return 0;
+    }else{
+        fclose(filePtr);
+        return 1;
+    }
+}
+
+//Function to read config files (Choices) from Files\CHOICES.txt and save them all in a LinkedList
+
 void load_game_config() {
     // read choices names from CHOICES.txt
     head = NULL;

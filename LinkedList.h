@@ -8,6 +8,8 @@
 typedef struct LinkedList *node;
 node head;
 int NOProblems;
+char username[30];
+
 typedef struct {
     char problem[200];
     char firstChoice[200];
@@ -29,6 +31,7 @@ typedef struct {
     int level;
 } point;
 
+point userStats;
 node add_node(node head, Choice value);
 
 void show_choice(node head, int id);
