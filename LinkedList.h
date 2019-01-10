@@ -34,7 +34,7 @@ typedef struct {
 point userStats;
 node add_node(node head, Choice value);
 
-void show_choice(node head, int id);
+node show_choice(node head, int id);
 
 void delete_node(node *head, int id);
 

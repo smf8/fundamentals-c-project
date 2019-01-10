@@ -3,4 +3,4 @@ project(FundamentalCProject C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(FundamentalCProject main.c LinkedList.c FileIO.c FileIO.h LinkedList.h)
+add_executable(FundamentalCProject main.c LinkedList.c FileIO.c FileIO.h LinkedList.h game.c game.h)

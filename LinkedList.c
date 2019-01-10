@@ -41,7 +41,7 @@ node add_node(node head, Choice value) {
     return head;
 }
 
-void show_choice(node head, int id) {
+node show_choice(node head, int id) {
     node tmp = head;
     while (tmp->next != NULL && tmp->choice.id != id) {
         tmp = tmp->next;
