@@ -83,7 +83,6 @@ int is_game_over() {
     }
     return 0;
 }
-
 void load_game() {
     head = NULL;
     read_choices();
