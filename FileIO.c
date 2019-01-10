@@ -15,7 +15,7 @@ void save_user_data(point stats, int problems[NOProblems]) {
     fwrite(&stats, sizeof(point), 1, filePtr);
     node t = head;
     int index = 0;
-    while(t != NULL){
+    while (t != NULL) {
 //        problems[index] = t->choice.probability;
         index++;
         t = t->next;
@@ -24,12 +24,12 @@ void save_user_data(point stats, int problems[NOProblems]) {
     fclose(filePtr);
 }
 
-int check_if_file_exist(char fileAddress[30]){
-    FILE* filePtr = fopen(fileAddress, "r");
-    if (filePtr == NULL){
+int check_if_file_exist(char fileAddress[30]) {
+    FILE *filePtr = fopen(fileAddress, "r");
+    if (filePtr == NULL) {
         fclose(filePtr);
         return 0;
-    }else{
+    } else {
         fclose(filePtr);
         return 1;
     }

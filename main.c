@@ -5,11 +5,13 @@
 #include <time.h>
 #include "LinkedList.h"
 #include "FileIO.h"
+#include "game.h"
 
 
 int main() {
     printf("Enter username : \n");
     gets(username);
+    srand((unsigned int) time(NULL));
     play_game();
     /*
      char address[30];

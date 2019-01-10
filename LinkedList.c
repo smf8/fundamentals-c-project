@@ -46,10 +46,14 @@ node show_choice(node head, int id) {
     while (tmp->next != NULL && tmp->choice.id != id) {
         tmp = tmp->next;
     }
+    if (tmp->choice.id != id) {
+        return NULL;
+    }
     puts(tmp->choice.problem);
     printf("Please Choose what to do : \n");
     printf("1- %s", tmp->choice.firstChoice);
     printf("2- %s", tmp->choice.secondChoice);
+    return tmp;
 }
 
 void delete_node(node *head, int id) {
