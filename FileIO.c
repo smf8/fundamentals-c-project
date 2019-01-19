@@ -34,7 +34,7 @@ int check_if_file_exist(char fileAddress[30]) {
     }
 }
 
-//Function to read config files (Choices) from Files\CHOICES.txt and save them all in a LinkedList
+// read choices count from CHOICES.txt and save the number in NOProblems
 void read_choices(){
     FILE *filePtr = fopen("Files\\CHOICES.txt", "r");
     int index = 0;
@@ -46,13 +46,16 @@ void read_choices(){
     NOProblems = index;
     fclose(filePtr);
 }
+
+// Load list of choices from Files\CHOICES.txt and add each one to our Linkedlist
+// this function is for times we want to load every setting as default
 void load_game_config() {
-    // read choices names from CHOICES.txt
     head = NULL;
     char strings[50][20];
     FILE *filePtr = fopen("Files\\CHOICES.txt", "r");
     int index = 0;
     int id = 1;
+    // reading line by line until reaching the end
     while (1) {
         char currentText[20];
         fscanf(filePtr, "%s", currentText);
@@ -69,9 +72,10 @@ void load_game_config() {
     fclose(filePtr);
 }
 
+
+// function to read choice data from Files
 Choice readChoice(char fileName[20]) {
     FILE *filePtr;
-
     char finalName[20] = "Files\\";
     strcat(finalName, fileName);
 //    puts(finalName);

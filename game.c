@@ -25,9 +25,9 @@ void save_game() {
 //        printf("- %d - ", problemsLeft[i]);
     }
     save_user_data(userStats, problemsLeft);
-    printf("Saved user data in file\n");
+    printf("You chose to quit at level [" BOLDBLUE "%d" RESET "]\n", userStats.level);
+    printf(BOLDGREEN "************ Your game stats are now saved ************\n" RESET);
 }
-
 void update_user_stats(point lastStats) {
     if (lastStats.level == 0) {
         // first Round
@@ -46,18 +46,20 @@ void update_user_stats(point lastStats) {
 
 void get_user_choice(node c) {
     int choice;
-    scanf("%d", &choice);
-    if (choice == -1) {
+    scanf("\n");
+    scanf("%c", &choice);
+    if (choice == 's') {
         save_game();
         userQuit = 1;
         return;
     }
     (c->choice).probability -= 1;
-    while (choice != 1 && choice != 2) {
+    while (choice != '1' && choice != '2') {
         printf("Invalid Input\n");
-        scanf("%d", &choice);
+        scanf("\n");
+        scanf("%c", &choice);
     }
-    if (choice == 1) {
+    if (choice == '1') {
         userStats.people += c->choice.firstCImpact[0];
         userStats.court += c->choice.firstCImpact[1];
         userStats.treasury += c->choice.firstCImpact[2];
@@ -83,6 +85,12 @@ int is_game_over() {
     }
     return 0;
 }
+void reset_game(){
+    userStats.treasury = 50;
+    userStats.people = 50;
+    userStats.level = 0;
+    userStats.court = 50;
+}
 void load_game() {
     head = NULL;
     read_choices();
@@ -105,7 +113,7 @@ void load_game() {
             Choice c = readChoice(fileName);
             c.id = (i + 1);
             c.probability = problemsCnt[i];
-            printf("problem[%d] is : %d\n", (i + 1), c.probability);
+//            printf("problem[%d] is : %d\n", (i + 1), c.probability);
             head = add_node(head, c);
             // file c[i] must be added to our linked list
         }
@@ -119,7 +127,7 @@ int check_user_name() {
             strcat(address, ".bin");
 
     if (!check_if_file_exist(address)) {
-        puts("Username was not found. Starting a new game...\n");
+        puts(RED "USERNAME WAS NOT FOUND\nStarting a new game...\n" RESET);
         // username not found starting from scratch
         return 0;
     } else {
@@ -128,27 +136,89 @@ int check_user_name() {
     }
 }
 
+void print_progress(){
+    int ppl, crt, trsry;
+    ppl = userStats.people / 5;
+    crt = userStats.court  /5;
+    trsry = userStats.treasury /5;
+    if (userStats.people <= 20)
+        printf(BOLDRED);
+    else if (userStats.people >= 70)
+        printf(BOLDGREEN);
+    else
+        printf(BOLDYELLOW);
+    printf("[");
+    for (int i = 0; i < 20 ; ++i) {
+        i<ppl?printf("#"):printf("-");
+    }
+    printf("]" RESET " People : [" BOLDBLACK "%d" RESET "]\n", userStats.people);
+
+    if (userStats.court <= 20)
+        printf(BOLDRED);
+    else if (userStats.court >= 70)
+        printf(BOLDGREEN);
+    else
+        printf(BOLDYELLOW);
+    printf("[");
+    for (int i = 0; i < 20 ; ++i) {
+        i<crt?printf("#"):printf("-");
+    }
+    printf("]" RESET " Court : [" BOLDBLACK "%d" RESET "]\n", userStats.court);
+    if (userStats.treasury <= 20)
+        printf(BOLDRED);
+    else if (userStats.treasury >= 70)
+        printf(BOLDGREEN);
+    else
+        printf(BOLDYELLOW);
+    printf("[");
+    for (int i = 0; i < 20 ; ++i) {
+        i<trsry?printf("#"):printf("-");
+    }
+    printf("]" RESET " Treasury : [" BOLDBLACK "%d" RESET "]\n", userStats.treasury);
+}
 
 void play_game() {
     userQuit = 0;
+    // check if username file exists
     if (check_user_name()) {
         // must start from a save;
-        printf("You are playing from where you left of. You were at level [%d] of the game\n", userStats.level);
-
-        if (is_game_over()) {
-            printf("You have lost the last game you played\nStarting a new game ...\n");
+        printf("You have a saved game with[" BOLDGREEN "%s" RESET "] username\n\nYou can load your last game\n\nRespond by entering either [y] or [n]\n", username);
+            char ch;
+        while(1){
+//        system("clear");
+            scanf("\n");
+            scanf("%c", &ch);
+            if (ch == 'n' || ch == 'y'){
+                break;
+            }else{
+                printf(RED "Invalid Input. please try again\n" RESET);
+            }
+        }
+            load_game();
+        if (ch == 'n'){
             load_game_config();
             point p;
             p.level = 0;
             update_user_stats(p);
-        } else {
-            load_game();
-            printf("Last stats :\nPeople : %d\nCourt : %d\nTreasury : %d\n", userStats.people, userStats.court,
-                   userStats.treasury);
+            printf(BOLDGREEN "**You chose to start a new game from scratch. keep in mind that your last saved game is not destroyed until it is overwritten by a new save.\n" RESET);
+        }else {
+            if (is_game_over()) {
+                // one of parameters is below 0 or average is below 10
+                // resetting everything
+                printf("You have " RED "LOST" RESET " the last game you played\nStarting a new game ...\n");
+                load_game_config();
+                point p;
+                p.level = 0;
+                update_user_stats(p);
+            } else {
+                print_progress();
+//            printf("Last stats :\nPeople : %d\nCourt : %d\nTreasury : %d\n", userStats.people, userStats.court,
+//                   userStats.treasury);
+            }
         }
     } else {
-        printf("Welcome %s to this fucking game\n", username);
-        printf("If you don't know how to play, well unfortunately there is no tutorial but I'll be glad to help you in person.\n");
+        printf("Welcome " GREEN "%s" RESET " to this fucking game\n", username);
+//        printf("If you don't know how to play, well unfortunately there is no tutorial but I'll be glad to help you in person.\n");
         // loads setting files in Files\Choices.txt
         load_game_config();
         // initial stats (50,50,50) with level 0; must change in future releases
@@ -159,34 +229,37 @@ void play_game() {
     // code for running game for 5 rounds for playing the final game remove below i and it's usages
 //    int i = 0;
     while (!is_game_over() && userQuit != 1) {
-
         if (is_list_empty(head) == -1) {
-            // List is Empty:
-            printf("List is empty \n");
+            // List is Empty reloading problems from Files
+//            printf("List became empty... reloading it ....................................................\n");
             load_game_config();
         }
 
-        int randomProblemId = (rand() % NOProblems) + 1;
-        node selectedNode = show_choice(head, randomProblemId);
-        while (selectedNode == NULL) {
-            randomProblemId = (rand() % NOProblems) + 1;
-            selectedNode = show_choice(head, randomProblemId);
-        }
+
+        // generating random numbers until reaching a valid Id among list's nodes
+//        int randomProblemId = (rand() % NOProblems) + 1;
+        int randomProblemId = (rand() % get_nodes_count(head)) + 1;
+//        node selectedNode = show_choice(head, randomProblemId);
+        node selectedNode = get_node(head, randomProblemId);
+//        while (selectedNode == NULL) {
+//            randomProblemId = (rand() % NOProblems) + 1;
+//            selectedNode = show_choice(head, randomProblemId);
+//            printf("*****************************************************************************************************\n");
+//        }
+            printf("*****************************************************************************************************\n");
         if (selectedNode != NULL) {
             get_user_choice(selectedNode);
-            printf("\n\n----------- User stats -------------\nPeople : %d\nCourt : %d\nTreasury : %d\n Level : %d\n\n id : %d remains %d\n\n",
-                   userStats.people, userStats.court, userStats.treasury, userStats.level, selectedNode->choice.id,
-                   selectedNode->choice.probability);
+//            printf("\n\n----------- User stats -------------\nPeople : %d\nCourt : %d\nTreasury : %d\n Level : %d\n\n id : %d remains %d\n\n",
+//                   userStats.people, userStats.court, userStats.treasury, userStats.level, selectedNode->choice.id,
+//                   selectedNode->choice.probability);
+            print_progress();
         }
-//        i++;
-//        if (i >= 8) {
-//            save_game();
-//            break;
-//        }
     }
+    // check if game is over for user
     if (is_game_over()) {
         save_game();
-        printf("Game over...\n you lost after [%d] levels", userStats.level);
+        printf("*************************************************" BOLDRED "GAME OVER" RESET "*************************************************\n");
+        printf("You lost after [" BOLDGREEN "%d" RESET " levels", userStats.level);
     }
 }
 

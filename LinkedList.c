@@ -64,7 +64,21 @@ int is_list_empty(node head) {
     return t;
 }
 
-
+node get_node(node head, int order){
+    node tmp = head;
+    for (int i = 1; i < order ; ++i) {
+        tmp = tmp->next;
+    }
+    printf("*****************************************************************************************************\n");
+    printf("[" BOLDMAGENTA "Problem" RESET "]  ");
+    printf(BOLDCYAN);
+    printf(tmp->choice.problem);
+    printf(RESET);
+    printf("Please Choose what to do : \n");
+    printf("[1] " YELLOW "%s" RESET, tmp->choice.firstChoice);
+    printf("[2] " YELLOW "%s" RESET, tmp->choice.secondChoice);
+    return tmp;
+}
 node show_choice(node head, int id) {
     node tmp = head;
     while (tmp->next != NULL && tmp->choice.id != id) {
@@ -74,13 +88,29 @@ node show_choice(node head, int id) {
         return NULL;
     }
 //    printf("---[%d]---\n", tmp->choice.probability);
-    puts(tmp->choice.problem);
+    printf("*****************************************************************************************************\n");
+    printf("[" BOLDMAGENTA "Problem" RESET "]  ");
+    printf(BOLDCYAN);
+    printf(tmp->choice.problem);
+    printf(RESET);
     printf("Please Choose what to do : \n");
-    printf("1- %s", tmp->choice.firstChoice);
-    printf("2- %s", tmp->choice.secondChoice);
+    printf("[1] " BLUE "%s" RESET, tmp->choice.firstChoice);
+    printf("[2] " BLUE "%s" RESET, tmp->choice.secondChoice);
     return tmp;
 }
-
+int get_nodes_count(node head){
+    int t;
+    if (head == NULL){
+        t = 0;
+    }else{
+        t=1;
+        node tmp = head;
+        for (; tmp->next !=NULL ; tmp = tmp->next) {
+            t++;
+        }
+    };
+    return t;
+}
 void delete_node(node *head, int id) {
     node t, q = *head;
     t = q->next;
