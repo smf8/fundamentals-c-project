@@ -216,6 +216,9 @@ void play_game() {
         point stats;
         stats.level = 0;
         update_user_stats(stats);
+//        int k = get_nodes_count(head);
+//        printf("%d\n" ,k);
+//        return;
     }
     // code for running game for 5 rounds for playing the final game remove below i and it's usages
 //    int i = 0;
@@ -228,15 +231,16 @@ void play_game() {
 
 
         // generating random numbers until reaching a valid Id among list's nodes
-//        int randomProblemId = (rand() % NOProblems) + 1;
-        int randomProblemId = (rand() % get_nodes_count(head)) + 1;
+//        printf("Nodes count : %d \n", get_nodes_count(head));
+        int div = get_nodes_count(head);
+        if (div == 0){
+            div = 1;
+        }
+//        print_list();
+        int randomProblemId = (rand() % div) + 1;
 //        node selectedNode = show_choice(head, randomProblemId);
+
         node selectedNode = get_node(head, randomProblemId);
-//        while (selectedNode == NULL) {
-//            randomProblemId = (rand() % NOProblems) + 1;
-//            selectedNode = show_choice(head, randomProblemId);
-//            printf("*****************************************************************************************************\n");
-//        }
             printf("*****************************************************************************************************\n");
         if (selectedNode != NULL) {
             get_user_choice(selectedNode);

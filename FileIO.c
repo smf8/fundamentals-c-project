@@ -121,6 +121,7 @@ void load_game_config() {
     while (1) {
         char currentText[20];
         fscanf(filePtr, "%s", currentText);
+        if (feof(filePtr))break;
         strcpy(strings[index], currentText); // name of the choice's file
         Choice c = readChoice(currentText);
         c.id = id;
@@ -128,7 +129,6 @@ void load_game_config() {
         id++;
         head = add_node(head, c);
         index++;
-        if (feof(filePtr))break;
     }
     NOProblems = index-1;
     fclose(filePtr);

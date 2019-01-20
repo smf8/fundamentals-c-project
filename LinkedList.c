@@ -53,13 +53,20 @@ node find_node(node head, int id) {
     }
     return tmp;
 }
-
+void print_list(){
+    for(node d = head; d!=NULL; d = d->next){
+            printf("Q is : %s\n", d->choice.problem);
+    }
+}
 int is_list_empty(node head) {
-    int t = 1;
+    int t = 0;
     if (head == NULL)
         return -1;
     else {
-        for (node d = head; d->next != NULL; d = d->next) t++;
+        for (node d = head; d != NULL; d = d->next){
+//            printf("Q is : %s\n", d->choice.problem);
+            t++;
+        };
     }
     return t;
 }
@@ -76,7 +83,7 @@ node get_node(node head, int order){
     printf(RESET);
     printf("Please Choose what to do : \n");
     printf("[1] " YELLOW "%s" RESET, tmp->choice.firstChoice);
-    printf("[2] " YELLOW "%s" RESET, tmp->choice.secondChoice);
+    printf("[2] " YELLOW "%s\n" RESET, tmp->choice.secondChoice);
     return tmp;
 }
 node show_choice(node head, int id) {
@@ -106,6 +113,7 @@ int get_nodes_count(node head){
         t=1;
         node tmp = head;
         for (; tmp->next !=NULL ; tmp = tmp->next) {
+//            printf("Node Question : %s \n", tmp->choice.problem);
             t++;
         }
     };
@@ -117,6 +125,7 @@ void delete_node(node *head, int id) {
     if (q->choice.id == id) {
         free(*head);
         *head = t;
+//        printf( RED"Deleted Head\n"RESET);
         return;
     }
     while (t->choice.id != id || t == NULL) {
@@ -124,5 +133,6 @@ void delete_node(node *head, int id) {
         t = t->next;
     }
     q->next = t->next;
+//    printf("DELETED WITH ID : %d\n" ,t->choice.id);
     free(t);
 }

@@ -51,10 +51,13 @@ typedef struct {
     int level;
 } point;
 point scoreBoard[200];
+Choice choices[200];
+int choicesCnt;
 int scoreBoardSize;
 point userStats;
 node add_node(node head, Choice value);
 int get_nodes_count(node head);
+void print_list();
 node show_choice(node head, int id);
 node get_node(node head, int order);
 node find_node(node head, int id);
