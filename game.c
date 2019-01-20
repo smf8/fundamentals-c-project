@@ -24,6 +24,10 @@ void save_game() {
         };
 //        printf("- %d - ", problemsLeft[i]);
     }
+    if (!isFromSavedGame) {
+        add_user_save(username);
+        printf("Updated users list for this username\n");
+    }
     save_user_data(userStats, problemsLeft);
     printf("You chose to quit at level [" BOLDBLUE "%d" RESET "]\n", userStats.level);
     printf(BOLDGREEN "************ Your game stats are now saved ************\n" RESET);
@@ -43,23 +47,22 @@ void update_user_stats(point lastStats) {
         userStats.court = lastStats.court;
     }
 }
-
 void get_user_choice(node c) {
-    int choice;
+    char  choice[10];
     scanf("\n");
-    scanf("%c", &choice);
-    if (choice == 's') {
+    scanf("%s", choice);
+    while (strcmp(choice, "1") != 0 && strcmp(choice, "2") != 0 && strcmp(choice, "s") != 0) {
+        printf(BOLDRED "Invalid Input\n" RESET);
+        scanf("\n");
+        scanf("%s", choice);
+    }
+    if (strcmp(choice, "s") == 0) {
         save_game();
         userQuit = 1;
         return;
     }
     (c->choice).probability -= 1;
-    while (choice != '1' && choice != '2') {
-        printf("Invalid Input\n");
-        scanf("\n");
-        scanf("%c", &choice);
-    }
-    if (choice == '1') {
+    if (strcmp(choice, "1") == 0) {
         userStats.people += c->choice.firstCImpact[0];
         userStats.court += c->choice.firstCImpact[1];
         userStats.treasury += c->choice.firstCImpact[2];
@@ -90,34 +93,6 @@ void reset_game(){
     userStats.people = 50;
     userStats.level = 0;
     userStats.court = 50;
-}
-void load_game() {
-    head = NULL;
-    read_choices();
-    char address[30];
-    strcpy(address, "Saves\\");
-    strcat(address, username),
-            strcat(address, ".bin");
-    FILE *filePtr = fopen(address, "rb");
-    fread(&userStats, sizeof(point), 1, filePtr);
-    int problemsCnt[NOProblems];
-    fread(problemsCnt, sizeof(int), (size_t) NOProblems, filePtr);
-    for (int i = 0; i < NOProblems; ++i) {
-        if (problemsCnt[i] > 0) {
-            char fileName[10];
-            strcpy(fileName, "c");
-            char tmp[12];
-            sprintf(tmp, "%d", (i + 1));
-            strcat(fileName, tmp);
-            strcat(fileName, ".txt");
-            Choice c = readChoice(fileName);
-            c.id = (i + 1);
-            c.probability = problemsCnt[i];
-//            printf("problem[%d] is : %d\n", (i + 1), c.probability);
-            head = add_node(head, c);
-            // file c[i] must be added to our linked list
-        }
-    }
 }
 
 int check_user_name() {
@@ -181,6 +156,8 @@ void play_game() {
     userQuit = 0;
     // check if username file exists
     if (check_user_name()) {
+
+        isFromSavedGame = true;
         // must start from a save;
         printf("You have a saved game with[" BOLDGREEN "%s" RESET "] username\n\nYou can load your last game\n\nRespond by entering either [y] or [n]\n", username);
             char ch;
@@ -257,9 +234,25 @@ void play_game() {
     }
     // check if game is over for user
     if (is_game_over()) {
-        save_game();
+//        save_game();
         printf("*************************************************" BOLDRED "GAME OVER" RESET "*************************************************\n");
-        printf("You lost after [" BOLDGREEN "%d" RESET " levels", userStats.level);
+        printf("You lost after [" BOLDGREEN "%d" RESET "] levels\n", userStats.level);
+        printf(RED "Do you want to submit your score for the scoreboard ?\n" RESET "Enter [" GREEN "y" RESET"] for yes and [" GREEN "n" RESET"]  for no\n");
+        char ch;
+        while(1){
+//        system("clear");
+            scanf("\n");
+            scanf("%c", &ch);
+            if (ch == 'n' || ch == 'y'){
+                break;
+            }else{
+                printf(RED "Invalid Input. please try again\n" RESET);
+            }
+        }
+        if (ch == 'y'){
+            save_game();
+            userQuit = 1;
+        }
     }
 }
 

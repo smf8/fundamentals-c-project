@@ -12,5 +12,8 @@ Choice readChoice(char fileName[20]);
 void read_choices();
 void save_user_data(point stats, int problems[NOProblems]);
 void load_game_config();
-int check_if_file_exist(char fileAdress[30]);
+void add_user_save(char username[]);
+void load_game();
+void read_saves();
+        int check_if_file_exist(char fileAdress[30]);
 #endif //FUNDAMENTALCPROJECT_FILEIO_H

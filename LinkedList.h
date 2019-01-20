@@ -5,6 +5,8 @@
 #ifndef FUNDAMENTALCPROJECT_LINKEDLIST_H
 #define FUNDAMENTALCPROJECT_LINKEDLIST_H
 
+#include <stdbool.h>
+
 typedef struct LinkedList *node;
 node head;
 #define RESET   "\033[0m"
@@ -25,6 +27,7 @@ node head;
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 int NOProblems;
+bool isFromSavedGame;
 char username[30];
 int userQuit;
 typedef struct {
@@ -47,7 +50,8 @@ typedef struct {
     int treasury;
     int level;
 } point;
-
+point scoreBoard[200];
+int scoreBoardSize;
 point userStats;
 node add_node(node head, Choice value);
 int get_nodes_count(node head);
