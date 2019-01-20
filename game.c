@@ -57,8 +57,22 @@ void get_user_choice(node c) {
         scanf("%s", choice);
     }
     if (strcmp(choice, "s") == 0) {
-        save_game();
-        userQuit = 1;
+        printf(RED "Do you want to submit your score for the scoreboard ?\n" RESET "Enter [" GREEN "y" RESET"] for yes and [" GREEN "n" RESET"]  for no\n");
+        char ch;
+        while(1){
+//        system("clear");
+            scanf("\n");
+            scanf("%c", &ch);
+            if (ch == 'n' || ch == 'y'){
+                break;
+            }else{
+                printf(RED "Invalid Input. please try again\n" RESET);
+            }
+        }
+        if (ch == 'y'){
+            save_game();
+        }
+            userQuit = 1;
         return;
     }
     (c->choice).probability -= 1;

@@ -15,5 +15,6 @@ void load_game_config();
 void add_user_save(char username[]);
 void load_game();
 void read_saves();
+void save_problem(char *filename, Choice c);
         int check_if_file_exist(char fileAdress[30]);
 #endif //FUNDAMENTALCPROJECT_FILEIO_H

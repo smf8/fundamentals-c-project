@@ -17,8 +17,8 @@ void add_user_save(char username[]) {
     fclose(filePtr);
 }
 
-void read_saves(){
-    FILE * readFilePtr = fopen("Saves\\saves.txt", "r");
+void read_saves() {
+    FILE *readFilePtr = fopen("Saves\\saves.txt", "r");
     char saves[100][20];
     int index = 0;
     while (1) {
@@ -32,7 +32,7 @@ void read_saves(){
     for (int i = 0; i < index; ++i) {
         char finalName[30] = "Saves\\";
         strcat(finalName, saves[i]);
-        FILE * filePtr = fopen(finalName, "r");
+        FILE *filePtr = fopen(finalName, "r");
         fread(&scoreBoard[i], sizeof(point), 1, filePtr);
         fclose(filePtr);
     }
@@ -105,7 +105,7 @@ void read_choices() {
         index++;
         if (feof(filePtr))break;
     }
-    NOProblems = index;
+    NOProblems = index-1;
     fclose(filePtr);
 }
 
@@ -130,7 +130,7 @@ void load_game_config() {
         index++;
         if (feof(filePtr))break;
     }
-    NOProblems = index;
+    NOProblems = index-1;
     fclose(filePtr);
 }
 
@@ -158,4 +158,20 @@ Choice readChoice(char fileName[20]) {
     fscanf(filePtr, "%d", &c.secondCImpact[2]);
     fclose(filePtr);
     return c;
+}
+
+void save_problem(char *filename, Choice c) {
+    FILE *filePtr = fopen("Files\\CHOICES.txt", "a");
+    fseek(filePtr, 0, SEEK_END);
+    fputs(filename, filePtr);
+    fputs("\n", filePtr);
+    fclose(filePtr);
+    char finalName[20] = "Files\\";
+    strcat(finalName, filename);
+    filePtr = fopen(finalName, "w");
+    fprintf(filePtr, "%s\n%s\n%d\n%d\n%d\n%s\n%d\n%d\n%d", c.problem, c.firstChoice, c.firstCImpact[0],
+            c.firstCImpact[1], c.firstCImpact[2], c.secondChoice, c.secondCImpact[0], c.secondCImpact[1],
+            c.secondCImpact[2]);
+    fclose(filePtr);
+    printf(GREEN"Problem saved successfully in c%d.txt\n"RESET, NOProblems + 1);
 }

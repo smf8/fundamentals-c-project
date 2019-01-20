@@ -10,4 +10,5 @@
 void sort_scores_by_average();
 void swap_element(point * p1, point * p2);
 void sort_by_element(char element);
+void add_problem();
 #endif //FUNDAMENTALCPROJECT_MISC_H
