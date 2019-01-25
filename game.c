@@ -42,9 +42,9 @@ void update_user_stats(point lastStats) {
         strcpy(userStats.name, username);
     } else {
         userStats.level += 1;
-        userStats.treasury = lastStats.treasury;
-        userStats.people = lastStats.people;
-        userStats.court = lastStats.court;
+        userStats.treasury = lastStats.treasury<=0?0:lastStats.treasury>=100?100:userStats.treasury;
+        userStats.people = lastStats.people<=0?0:lastStats.people>=100?100:userStats.people;
+        userStats.court = lastStats.court<=0?0:lastStats.court>=100?100:userStats.court;
     }
 }
 void get_user_choice(node c) {
@@ -140,7 +140,7 @@ void print_progress(){
     for (int i = 0; i < 20 ; ++i) {
         i<ppl?printf("#"):printf("-");
     }
-    printf("]" RESET " People : [" BOLDBLACK "%d" RESET "]\n", userStats.people);
+    printf("]" RESET " People : [" BOLDBLACK "%d" RESET "]\n", userStats.people<=0?0:userStats.people>=100?100:userStats.people);
 
     if (userStats.court <= 20)
         printf(BOLDRED);
@@ -152,7 +152,7 @@ void print_progress(){
     for (int i = 0; i < 20 ; ++i) {
         i<crt?printf("#"):printf("-");
     }
-    printf("]" RESET " Court : [" BOLDBLACK "%d" RESET "]\n", userStats.court);
+    printf("]" RESET " Court : [" BOLDBLACK "%d" RESET "]\n", userStats.court<=0?0:userStats.court>=100?100:userStats.court);
     if (userStats.treasury <= 20)
         printf(BOLDRED);
     else if (userStats.treasury >= 70)
@@ -163,7 +163,7 @@ void print_progress(){
     for (int i = 0; i < 20 ; ++i) {
         i<trsry?printf("#"):printf("-");
     }
-    printf("]" RESET " Treasury : [" BOLDBLACK "%d" RESET "]\n", userStats.treasury);
+    printf("]" RESET " Treasury : [" BOLDBLACK "%d" RESET "]\n", userStats.treasury<=0?0:userStats.treasury>=100?100:userStats.treasury);
 }
 
 void play_game() {

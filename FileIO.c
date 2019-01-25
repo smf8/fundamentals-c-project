@@ -43,6 +43,9 @@ void save_user_data(point stats, int problems[NOProblems]) {
     strcat(finalName, stats.name);
     strcat(finalName, ".bin");
     FILE *filePtr = fopen(finalName, "wb");
+    stats.people = stats.people<=0?0:stats.people>=100?100:stats.people;
+    stats.court = stats.court<=0?0:stats.court>=100?100:stats.court;
+    stats.treasury = stats.treasury<=0?0:stats.treasury>=100?100:stats.treasury;
     fwrite(&stats, sizeof(point), 1, filePtr);
     node t = head;
     int index = 0;
